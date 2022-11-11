@@ -17,47 +17,50 @@ public class PhoneBook {
     }
 
     public PhoneBook() {
-        this.phonebook = new HashMap<>();
+        this.phonebook = new LinkedHashMap<>();
     }
 
     public void add(String name, String phoneNumber) {
-        phonebook.put(name,Arrays.asList(phoneNumber));
+        ArrayList<String> a = new ArrayList<>();
+        a.add(phoneNumber);
+        this.phonebook.put(name,a);
     }
 
     public void addAll(String name, String... phoneNumbers) {
-        phonebook.put(name,Arrays.asList(phoneNumbers));
+        ArrayList<String> aa = new ArrayList<>();
+        aa.addAll(Arrays.asList(phoneNumbers));
+        this.phonebook.put(name, aa);
     }
 
     public void remove(String name) {
-        phonebook.remove(name);
+        this.phonebook.remove(name);
     }
 
+    public Boolean hasEntry(String name) {
+       return this.phonebook.containsKey(name);
+    }
     public Boolean hasEntry(String name, String phoneNumber) {
-       return phonebook.containsKey(name);
+        return this.phonebook.containsKey(name) && this.phonebook.get(name).contains(phoneNumber);
     }
 
     public List<String> lookup(String name) {
-        return phonebook.get(name);
+        return this.phonebook.get(name);
     }
 
     public String reverseLookup(String phoneNumber)  {
-        for (Map.Entry<String, List<String>> entry: phonebook.entrySet()) {
-            if (entry.getValue().contains(phoneNumber)) {
-                return entry.getKey();
+        for (String name : this.phonebook.keySet()) {
+            if (phonebook.get(name).contains(phoneNumber)) {
+                return name;
             }
         }
-        return null;
+        return "";
     }
 
     public List<String> getAllContactNames() {
-        List<String> allContacts = new ArrayList<>();
-            for (String name : phonebook.keySet()) {
-                allContacts.add(name);
-            }
-        return allContacts;
+        return new ArrayList<>(this.phonebook.keySet());
     }
 
     public Map<String, List<String>> getMap() {
-        return phonebook;
+        return this.phonebook;
     }
 }
